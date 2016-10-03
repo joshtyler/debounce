@@ -13,9 +13,10 @@ ARCHITECTURE behavior OF debounce_test IS
 	Generic ( clock_frequency : integer; --Clock frequency in Hertz
 	          settling_time : time); --Maximum signal settling time
     PORT(
+			clk : IN std_logic;
          input : IN  std_logic;
          output : OUT  std_logic;
-         clk : IN  std_logic
+         change : OUT  std_logic
         );
     END COMPONENT;
     
@@ -26,6 +27,7 @@ ARCHITECTURE behavior OF debounce_test IS
 
  	--Outputs
    signal output : std_logic;
+	signal change : std_logic;
 
    -- Clock period definitions
 	constant clock_frequency : integer := 40_000_000;
@@ -43,9 +45,10 @@ BEGIN
 			settling_time => settling_time
 		)
 		PORT MAP (
+			clk => clk,
 			input => input,
 			output => output,
-			clk => clk
+			change => change
 		);
 
    -- Clock process definitions

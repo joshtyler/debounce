@@ -5,9 +5,10 @@ use IEEE.NUMERIC_STD.ALL;
 entity debounce is
 	Generic ( clock_frequency : integer; --Clock frequency in Hertz
 	          settling_time : time); --Maximum signal settling time
-	Port ( input : in std_logic;
+	Port ( clk : in std_logic;
+	       input : in std_logic;
 	       output : out std_logic;
-			 clk : in std_logic);
+			 change : out std_logic);
 end debounce;
 
 architecture Behavioral of debounce is
@@ -23,9 +24,11 @@ begin
 	process(clk)
 	begin
 		if rising_edge(clk) then
+			change <= '0';
 			if input /= output_buf then
 				if counter = max_count then
 					output_buf <= input;
+					change <= '1';
 				else
 					counter <= counter + 1;
 				end if;
